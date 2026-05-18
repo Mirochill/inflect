@@ -6,6 +6,11 @@ Features
 
 - Updated `ast` classes for Python 3.14 compatibility. (#225)
 
+Bugfixes
+--------
+
+- Treat numeric values equal to ``1`` (such as ``1.0``) as singular counts.
+
 
 v7.4.0
 ======
