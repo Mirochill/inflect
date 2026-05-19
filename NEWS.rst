@@ -7,6 +7,13 @@ Features
 - Updated `ast` classes for Python 3.14 compatibility. (#225)
 
 
+Bugfixes
+--------
+
+- Adjusted public pluralization signatures so static type checkers accept
+  ``str`` inputs while runtime validation still rejects empty strings. (#233)
+
+
 v7.4.0
 ======
 

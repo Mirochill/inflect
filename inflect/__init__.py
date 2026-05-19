@@ -78,7 +78,7 @@ from typing import (
 )
 
 from more_itertools import windowed_complete
-from typeguard import typechecked
+from typeguard import TypeCheckError, typechecked
 
 from .compat.py38 import Annotated
 
@@ -2068,6 +2068,15 @@ else:
         """String with at least 1 character"""
 
 
+def _validate_word(text: str, parameter: str = "text") -> Word:
+    if text:
+        return cast(Word, text)
+
+    raise TypeCheckError(
+        f'argument "{parameter}" (str) is not an instance of {__name__}.Word'
+    )
+
+
 class engine:
     def __init__(self) -> None:
         self.classical_dict = def_classical.copy()
@@ -2386,7 +2395,7 @@ class engine:
             return "", "", ""
 
     @typechecked
-    def plural(self, text: Word, count: Optional[Union[str, int, Any]] = None) -> str:
+    def plural(self, text: str, count: Optional[Union[str, int, Any]] = None) -> str:
         """
         Return the plural of text.
 
@@ -2398,6 +2407,7 @@ class engine:
         Whitespace at the start and end is preserved.
 
         """
+        text = _validate_word(text)
         pre, word, post = self.partition_word(text)
         if not word:
             return text
@@ -2411,7 +2421,7 @@ class engine:
 
     @typechecked
     def plural_noun(
-        self, text: Word, count: Optional[Union[str, int, Any]] = None
+        self, text: str, count: Optional[Union[str, int, Any]] = None
     ) -> str:
         """
         Return the plural of text, where text is a noun.
@@ -2424,6 +2434,7 @@ class engine:
         Whitespace at the start and end is preserved.
 
         """
+        text = _validate_word(text)
         pre, word, post = self.partition_word(text)
         if not word:
             return text
@@ -2432,7 +2443,7 @@ class engine:
 
     @typechecked
     def plural_verb(
-        self, text: Word, count: Optional[Union[str, int, Any]] = None
+        self, text: str, count: Optional[Union[str, int, Any]] = None
     ) -> str:
         """
         Return the plural of text, where text is a verb.
@@ -2445,6 +2456,7 @@ class engine:
         Whitespace at the start and end is preserved.
 
         """
+        text = _validate_word(text)
         pre, word, post = self.partition_word(text)
         if not word:
             return text
@@ -2456,7 +2468,7 @@ class engine:
 
     @typechecked
     def plural_adj(
-        self, text: Word, count: Optional[Union[str, int, Any]] = None
+        self, text: str, count: Optional[Union[str, int, Any]] = None
     ) -> str:
         """
         Return the plural of text, where text is an adjective.
@@ -2469,6 +2481,7 @@ class engine:
         Whitespace at the start and end is preserved.
 
         """
+        text = _validate_word(text)
         pre, word, post = self.partition_word(text)
         if not word:
             return text
@@ -2555,7 +2568,7 @@ class engine:
     @typechecked
     def singular_noun(
         self,
-        text: Word,
+        text: str,
         count: Optional[Union[int, str, Any]] = None,
         gender: Optional[str] = None,
     ) -> Union[str, Literal[False]]:
@@ -2585,6 +2598,7 @@ class engine:
         False
 
         """
+        text = _validate_word(text)
         pre, word, post = self.partition_word(text)
         if not word:
             return text
